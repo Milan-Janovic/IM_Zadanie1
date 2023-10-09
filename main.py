@@ -1,6 +1,8 @@
 # Importujeme potrebné knižnice
 import csv
 import math
+
+import numpy
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -297,33 +299,40 @@ kovariacia_u_y = spocitaj_kovariaciu(list_u, list_y, stredna_hodnota_u, stredna_
 kovariacia_y_u = spocitaj_kovariaciu(list_y, list_u, stredna_hodnota_y, stredna_hodnota_u)
 uloz_data_do_suboru("Kovariacia_u_y = " + str(kovariacia_u_y) + "\n\n")
 
-print("Kovariacia_u_y : ", kovariacia_u_y)
-print("Kovariacia_y_u : ", kovariacia_y_u)
+#print("Kovariacia_u_y : ", kovariacia_u_y)
+#print("Kovariacia_y_u : ", kovariacia_y_u)
 
 # Vytvorime kovariačnú maticu
-matica = vytvor_maticu(smer_odchylka_u, kovariacia_u_y, kovariacia_y_u, smer_odchylka_y)
-print(matica[0])
-print(matica[1])
-
+matica = vytvor_maticu(rozptyl_u, kovariacia_u_y, kovariacia_y_u, rozptyl_y)
 uloz_data_do_suboru("Matica - Spocitana = \n" + str(matica[0]) + "\n" + str(matica[1]) + "\n\n")
+#print(matica[0])
+#print(matica[1])
+
+# Vytvorime kovariačnú maticu pomocou vstavanej funkcie
+cov_matrix = np.cov(list_u, list_y)
+
+# Print the covariance matrix
+#print(cov_matrix)
+uloz_data_do_suboru("Matica - numpy.cov = \n" + str(cov_matrix[0]) + "\n" + str(cov_matrix[1]) + "\n\n")
+
 
 # Spočítame koeficient korelácie
 koeficient_korelacie = spocitaj_koeficient_korelacie(kovariacia_u_y, smer_odchylka_u, smer_odchylka_y)
 uloz_data_do_suboru("Koeficient Korelacie " + str(koeficient_korelacie) + "\n\n")
 
 # Vypíšeme výsledky
-print("Korelačný koeficient - Spočítaný        :", koeficient_korelacie)
+#print("Korelačný koeficient - Spočítaný        :", koeficient_korelacie)
 
 # Porovnáme so vstavanou funkciou
 correlation_coefficient = np.corrcoef(list_u, list_y)[0, 1]
-print("Korelačný koeficient - Vstavaná Funkcia :", correlation_coefficient)
+#print("Korelačný koeficient - Vstavaná Funkcia :", correlation_coefficient)
 uloz_data_do_suboru("Korelačný koeficient - Vstavaná Funkcia (numpy.corrcoef) :"  + str(correlation_coefficient) + "\n\n")
 
 autokorelacna_func_u = spocitaj_autokorelacnu_funkciu(list_u)
 autokorelacna_func_y = spocitaj_autokorelacnu_funkciu(list_y)
 
-print("Autokorelačná funkcia - u :", autokorelacna_func_u)
-print("Autokorelačná funkcia - y :", autokorelacna_func_y)
+#print("Autokorelačná funkcia - u :", autokorelacna_func_u)
+#print("Autokorelačná funkcia - y :", autokorelacna_func_y)
 uloz_data_do_suboru("Autokorelačná funkcia - U :" + str(autokorelacna_func_u) + "\n\n")
 uloz_data_do_suboru("Autokorelačná funkcia - Y :" + str(autokorelacna_func_y) + "\n\n")
 
@@ -331,7 +340,7 @@ uloz_data_do_suboru("Autokorelačná funkcia - Y :" + str(autokorelacna_func_y) 
 vzajomne_korelacna_func_u_y = spocitaj_vzajomne_korelacnu_funkciu(list_u, list_y)
 uloz_data_do_suboru("Vzajomne Korelacna Funkcia U Y :" + str(vzajomne_korelacna_func_u_y) + "\n\n")
 
-print("Vzájomne korelačná funkcia:", vzajomne_korelacna_func_u_y)
+#print("Vzájomne korelačná funkcia:", vzajomne_korelacna_func_u_y)
 
 plot_histogram(list_u, "Histogram - U")
 plot_histogram(list_y, "Histogram - Y")
@@ -345,7 +354,4 @@ plot_priebeh_funkcie(list_y, "Priebeh - Y", "Iteracia", "Hodnota")
 plot_priebeh_funkcie(autokorelacna_func_u, "Autokorelacna Funkcia - U", "Prvok", "Hodnota")
 plot_priebeh_funkcie(autokorelacna_func_y, "Autokorelacna Funkcia - Y", "Prvok", "Hodnota")
 plot_priebeh_funkcie(vzajomne_korelacna_func_u_y, "Vzajomne korelacna Funkcia", "Prvok", "Hodnota")
-
-
-
 
