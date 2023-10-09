@@ -240,17 +240,31 @@ def plot_priebeh_funkcie(list, filename, x_axis_label, y_axis_label):
     # Vzorové dáta
     data = list
 
-    # Vytvorenie grafu
-    plt.plot(data)
+    # Vytvorenie grafu s čiernymi bodmi a spojnicami k y=0
+    x = np.arange(len(data))
+
+    # Adjust marker size (e.g., set marker size to 6)
+    marker_size = 6
+    plt.figure(figsize=(8, 6))  # Increase the figure size (adjust as needed)
+    plt.scatter(x, data, color='blue', marker='o', s=marker_size)
+    plt.plot([x, x], [np.zeros(len(data)), data], 'b',alpha=0.5)
 
     # Nastavenie popisov osí
     plt.xlabel(x_axis_label)
     plt.ylabel(y_axis_label)
     plt.title(filename)
 
+    # Pridaj horizontalnu ciaru v y=0
+    plt.axhline(y=0, color='black', linestyle=':', label='Horizontal Line at 0')
+
     # Zobrazenie grafu
     plt.savefig(f"./Plots/{filename}.png")
     plt.clf()
+
+
+def vytvor_maticu(a, b, c, d):
+    matica = [[a, b], [c, d]]
+    return matica
 
 
 def uloz_data_do_suboru(data):
@@ -280,7 +294,18 @@ uloz_data_do_suboru("Smerodajna Odchylka Y = " + str(smer_odchylka_y) + "\n\n")
 
 # Spočítame kovariáciu medzi 'u' a 'y'
 kovariacia_u_y = spocitaj_kovariaciu(list_u, list_y, stredna_hodnota_u, stredna_hodnota_y)
+kovariacia_y_u = spocitaj_kovariaciu(list_y, list_u, stredna_hodnota_y, stredna_hodnota_u)
 uloz_data_do_suboru("Kovariacia_u_y = " + str(kovariacia_u_y) + "\n\n")
+
+print("Kovariacia_u_y : ", kovariacia_u_y)
+print("Kovariacia_y_u : ", kovariacia_y_u)
+
+# Vytvorime kovariačnú maticu
+matica = vytvor_maticu(smer_odchylka_u, kovariacia_u_y, kovariacia_y_u, smer_odchylka_y)
+print(matica[0])
+print(matica[1])
+
+uloz_data_do_suboru("Matica - Spocitana = \n" + str(matica[0]) + "\n" + str(matica[1]) + "\n\n")
 
 # Spočítame koeficient korelácie
 koeficient_korelacie = spocitaj_koeficient_korelacie(kovariacia_u_y, smer_odchylka_u, smer_odchylka_y)
