@@ -253,23 +253,38 @@ def plot_priebeh_funkcie(list, filename, x_axis_label, y_axis_label):
     plt.clf()
 
 
+def uloz_data_do_suboru(data):
+    # Open the text file in append mode ('a')
+    with open("output.txt", "a") as file:
+        # Append the new data to the file
+        file.write(data)
+
+
 # Spočítame stredné hodnoty pre 'u' a 'y'
 stredna_hodnota_u = spocitaj_strednu_hodnotu(list_u)
 stredna_hodnota_y = spocitaj_strednu_hodnotu(list_y)
+uloz_data_do_suboru("Stredna Hodnota U = " + str(stredna_hodnota_u) + "\n\n")
+uloz_data_do_suboru("Stredna Hodnota Y = " + str(stredna_hodnota_y) + "\n\n")
 
 # Spočítame rozptyly pre 'u' a 'y'
 rozptyl_u = spocitaj_rozptyl(list_u, stredna_hodnota_u)
 rozptyl_y = spocitaj_rozptyl(list_y, stredna_hodnota_y)
+uloz_data_do_suboru("Rozptyl U = " + str(rozptyl_u) + "\n\n")
+uloz_data_do_suboru("Rozptyl Y = " + str(rozptyl_y) + "\n\n")
 
 # Spočítame smerodajné odchýlky pre 'u' a 'y'
 smer_odchylka_u = math.sqrt(rozptyl_u)
 smer_odchylka_y = math.sqrt(rozptyl_y)
+uloz_data_do_suboru("Smerodajna Odchylka U = " + str(smer_odchylka_u) + "\n\n")
+uloz_data_do_suboru("Smerodajna Odchylka Y = " + str(smer_odchylka_y) + "\n\n")
 
 # Spočítame kovariáciu medzi 'u' a 'y'
 kovariacia_u_y = spocitaj_kovariaciu(list_u, list_y, stredna_hodnota_u, stredna_hodnota_y)
+uloz_data_do_suboru("Kovariacia_u_y = " + str(kovariacia_u_y) + "\n\n")
 
 # Spočítame koeficient korelácie
 koeficient_korelacie = spocitaj_koeficient_korelacie(kovariacia_u_y, smer_odchylka_u, smer_odchylka_y)
+uloz_data_do_suboru("Koeficient Korelacie " + str(koeficient_korelacie) + "\n\n")
 
 # Vypíšeme výsledky
 print("Korelačný koeficient - Spočítaný        :", koeficient_korelacie)
@@ -277,14 +292,19 @@ print("Korelačný koeficient - Spočítaný        :", koeficient_korelacie)
 # Porovnáme so vstavanou funkciou
 correlation_coefficient = np.corrcoef(list_u, list_y)[0, 1]
 print("Korelačný koeficient - Vstavaná Funkcia :", correlation_coefficient)
+uloz_data_do_suboru("Korelačný koeficient - Vstavaná Funkcia (numpy.corrcoef) :"  + str(correlation_coefficient) + "\n\n")
 
 autokorelacna_func_u = spocitaj_autokorelacnu_funkciu(list_u)
 autokorelacna_func_y = spocitaj_autokorelacnu_funkciu(list_y)
 
 print("Autokorelačná funkcia - u :", autokorelacna_func_u)
 print("Autokorelačná funkcia - y :", autokorelacna_func_y)
+uloz_data_do_suboru("Autokorelačná funkcia - U :" + str(autokorelacna_func_u) + "\n\n")
+uloz_data_do_suboru("Autokorelačná funkcia - Y :" + str(autokorelacna_func_y) + "\n\n")
+
 
 vzajomne_korelacna_func_u_y = spocitaj_vzajomne_korelacnu_funkciu(list_u, list_y)
+uloz_data_do_suboru("Vzajomne Korelacna Funkcia U Y :" + str(vzajomne_korelacna_func_u_y) + "\n\n")
 
 print("Vzájomne korelačná funkcia:", vzajomne_korelacna_func_u_y)
 
